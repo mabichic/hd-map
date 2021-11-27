@@ -1,0 +1,45 @@
+{
+  "name": "hd-map",
+  "version": "0.1.0",
+  "private": true,
+
+  "scripts": {
+    "start": "set PORT=4000 && react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "react-start": "set BROWSER=none && npm start",
+    "electron-start": "set ELECTRON_START_URL=http://localhost:4000 && electron .",
+    "electron-pack": "npm run build && electron-builder --publish=always"
+  },
+  "build": {
+    "appId": "com.example.electron-app",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "main": "public/Main.js",
+  "homepage": "./"
+}
