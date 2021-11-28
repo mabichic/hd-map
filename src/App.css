@@ -24,6 +24,16 @@
   color: white;
 }
 
+.blue-circle {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #088;
+  border-radius: 15px;
+  background-color: #0FF;
+  opacity: 0.5;
+  z-index: 9999; /* Watch out for this!!! */
+}
+
 .App-link {
   color: #61dafb;
 }

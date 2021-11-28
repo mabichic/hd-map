@@ -4,7 +4,7 @@ import View from 'ol/View';
 import XYZ from 'ol/source/XYZ';
 
 import TileLayer from 'ol/layer/Tile';
-import { Box } from '@mui/system';
+import { Box, typography } from '@mui/system';
 import proj4 from 'proj4';
 import 'ol/ol.css';
 import {register} from 'ol/proj/proj4';
@@ -12,7 +12,7 @@ import {register} from 'ol/proj/proj4';
 import { useSelector } from "react-redux";
 import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
-import { Feature } from 'ol';
+import { Overlay, Feature } from 'ol';
 import LineString from 'ol/geom/LineString';
 import {defaults as defaultControls} from 'ol/control';
 import LayerSwitcher from 'ol-ext/control/LayerSwitcher'
@@ -23,6 +23,8 @@ import Polygon from 'ol/geom/Polygon';
 import HdMapStyle from './map/HdMapStyle';
 import { DragBoxInteraction, ModifyInteraction, SelectInteraction, SnapInteraction, TranslateInteraction } from './map/Modify';
 import { mapService} from '../service/message.service';
+import ReactTooltip from 'react-tooltip';
+import { Typography } from '@mui/material';
 proj4.defs([
   ['EPSG:5186', '+proj=tmerc +lat_0=38 +lon_0=127 +k=1 +x_0=200000 +y_0=600000 +epllps']
 ]);
@@ -35,12 +37,17 @@ const { ipcRenderer } = window.require("electron");
 function HdMap () { 
   const [hdMap, setHdMap] = useState();
   const [layers, setLayers] = useState([]);
+  const [layer, setLayer] = useState();
   const [source, setSource] = useState();
   const [select, setSelecte] = useState();
+  const [content, setContent] = useState();
+  const [overlay, setOverlay] = useState();
   const selector = useSelector((state)=>state);
   const mapRef = useRef();
   mapRef.current = hdMap;
 
+  const overlayRef = useRef(null);
+  const popupRef = useRef(null);
   
   useEffect(() => {
     const backLayer = new TileLayer({
@@ -51,6 +58,14 @@ function HdMap () {
             maxZoom: 19,
         })
     })
+    const overlay = new Overlay({
+      element : overlayRef.current,
+      autoPan : true, 
+      autoPanAnimation : {
+        duration : 250,
+      }
+    })
+
     const initialMap = new Map({
       layers: [
         backLayer,
@@ -68,6 +83,8 @@ function HdMap () {
       interactions : defaultInteraction({doubleClickZoom:false}),
       target: 'map'
     });
+    initialMap.addOverlay(overlay);
+    setOverlay(overlay);
     setHdMap(initialMap);
 
     
@@ -77,6 +94,7 @@ function HdMap () {
   useEffect(()=>{
     console.log(source);
     let subscription = mapService.getMessage().subscribe(message => {
+      console.log(message);
       if (message) {
         var feature = source.getFeatureById(message.type+'_'+message.id);
         select.getFeatures().clear();
@@ -205,6 +223,7 @@ function HdMap () {
         vector.addFeature(polygon);
       });
       setLayers([...layers, layer]);
+      setLayer(layer);
       if(isFinite(vector.getExtent()[0])&&isFinite(vector.getExtent()[1])&&isFinite(vector.getExtent()[2])&&isFinite(vector.getExtent()[3])) hdMap.getView().fit(vector.getExtent());
       const select = SelectInteraction(layer);
       hdMap.addInteraction(select);
@@ -214,7 +233,34 @@ function HdMap () {
       hdMap.addInteraction(SnapInteraction(vector));
       setSelecte(select);
 
+      hdMap.getViewport().addEventListener('contextmenu', function(evt){
+        evt.preventDefault();
+        const coordinate = hdMap.getEventCoordinate(evt);
+        const pixel = hdMap.getPixelFromCoordinate(coordinate);
+        const feature = hdMap.forEachFeatureAtPixel(pixel, function (feature) {
+          return feature;
+        },{
+          layerFilter: function(layer) {
+              return layer === layer
+          }
+        });
+        console.log(feature);
+        if(feature) {
+          var txt = {};
+          feature.getKeys().forEach(key=>{
+              if(key==='geometry') return;
+              txt[key] = feature.get(key);
+          });
+          setContent(()=>(txt));
+          overlay.setPosition(coordinate);
+        }else{
+          overlay.setPosition(undefined);
+          return false;
+        }
+
+      });
     });
+
   },[selector])
   
   const keySetting = (e)=>{
@@ -226,7 +272,19 @@ function HdMap () {
   }
   
   return (
+    <>
     <Box component="div" onKeyPress={keySetting} id='map' sx={{width:'100%', height:'100%'}} tabIndex="0"/>
+    <div id="windowHDMapOverlay" ref={overlayRef}>
+    <a href="#" id="windowHDMapOverlay-closer" className="ol-popup-closer"></a>
+    <div id="windowHDMapOverlay-content">
+      {content && (
+         Object.entries(content).map(([attKey, attValue])=>{
+          return <Typography key={attKey}> {`${attKey} : ${attValue}`} </Typography>
+        })
+      )}
+    </div>
+    </div>
+    </>
   )
 }
 

@@ -24,6 +24,7 @@ export const isLoadingService = {
 
 export const mapService = {
     moveMap : (type, id) => mapSubject.next({type:type, id:id}),
+    changeObject : (type, id, att) => mapSubject.next({type:type, id:id, att:att}),
     clearMessages: () => mapSubject.next(),
     getMessage: () => mapSubject.asObservable()
 }

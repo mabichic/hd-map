@@ -68,5 +68,8 @@
     ]
   },
   "main": "public/Main.js",
-  "homepage": "./"
+  "homepage": "./",
+  "dependencies": {
+    "react-tooltip": "^4.2.21"
+  }
 }

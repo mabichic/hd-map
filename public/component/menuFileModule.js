@@ -76,7 +76,7 @@ class LAYER_LN_LINK{
         this.Junction=Number(Junction);
         this.Type=Number(Type)===0? "LANE_TYPE_NONE" : Number(Type)===1? "GEN_S" : Number(Type)===2? "JUN_S" :  Number(Type)===3? "JUN_L" : Number(Type)===4? "JUN_R" : Number(Type)===5 ? "JUN_U" : Number(Type)===6 ? "POCKET_L" : Number(Type)===7 ? "POCKET_R" : Number(Type)===8 ? "JUN_UNPROTECTED_L" :null;
         this.Sub_Type= Number(Sub_Type)===1? "GEN" : Number(Sub_Type)===2? "BUS_ONLY" : Number(Sub_Type)===3? "HIGHPASS" : Number(Sub_Type)===4? "TURNAL" :null;
-        this.Twoway=Number(Twoway)===1? "양방향," : Number(Twoway)===0? "일방" :null;
+        this.Twoway=Number(Twoway)===1? "양방향" : Number(Twoway)===0? "일방" :null;
         this.RLID=Number(RLID);
         this.LLinkID=Number(LLinkID);
         this.RLinkID=Number(RLinkID);

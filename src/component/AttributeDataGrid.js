@@ -81,7 +81,8 @@ function AttributeDataGrid ({dataKey,rows, updateState, rowIndex}){
     if(typeof params.newValue ==="undefined") return params.oldValue;
     if(params.oldValue)
     var value = params.newValue.trim();
-    var arrs = value.split(',');
+    var arrs = [...new Set(value.split(','))];
+    
     var selfId = params.data['ID'];
     var check = false; 
     var message = ""; 
@@ -233,9 +234,9 @@ function AttributeDataGrid ({dataKey,rows, updateState, rowIndex}){
     if(ids.indexOf(e.node.data['ID'])>-1){
       messageService.sendMessage("취소","이미 존재하는 ID로는 변경 할 수 없습니다.");
       e.node.setDataValue('ID',e.oldValue);
-      return ;
     }
     
+    mapService.changeObject(dataKey, e.node.data.ID, e.node.data);
   };
 
   // const onSelectionChanged = () => {
