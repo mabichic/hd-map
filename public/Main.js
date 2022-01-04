@@ -18,7 +18,7 @@ function createWindow() {
           }
     });
 
-    console.log(win.id);
+    // console.log(win.id);
     /*
     * ELECTRON_START_URL을 직접 제공할경우 해당 URL을 로드합니다.
     * 만일 URL을 따로 지정하지 않을경우 (프로덕션빌드) React 앱이
@@ -34,7 +34,7 @@ function createWindow() {
     * startUrl에 배정되는 url을 맨 위에서 생성한 BrowserWindow에서 실행시킵니다.
     * */
     win.loadURL(startUrl);
-    win.webContents.openDevTools();
+    // win.webContents.openDevTools();
 
 }
 const menu = Menu.buildFromTemplate(menuTemplate);
