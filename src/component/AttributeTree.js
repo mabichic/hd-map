@@ -1,24 +1,19 @@
 import * as React from 'react';
 import TreeItem from '@mui/lab/TreeItem';
 import { useSelector } from 'react-redux';
-import { TreeState, TreeTable } from 'cp-react-tree-table';
 
 import { TreeView } from '@mui/lab';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import AttributeDataGrid from './AttributeDataGrid';
-import { Box } from '@mui/system';
 export default function AttributeTree() {
   const selector = useSelector((state)=>state);
   const renderTree = (nodes, updateNum) => {
-    console.log(nodes?.length<1)
     if(nodes?.length<1) return "";
 
-    console.log(nodes);
     return (
       <>
       {[...nodes]?.slice(0).reverse().map((node, index)=>{
-        console.log(node);
         return (
           
           <TreeItem sx={{padding:"0px", margin:"0px"}} key={"LayerSet"+(index+1)} nodeId={"LayerSet"+(index+1)} label={"Layer Set "+(node.INDEX)}>
@@ -31,7 +26,6 @@ export default function AttributeTree() {
                   });
                   return obj;
                 });
-                console.log(rows);
               return (
                 <TreeItem key={`${key}_${index}`} nodeId={`${key}_${index}`} label={`${key}(${rows.length})`}>
                   <AttributeDataGrid dataKey={key} rows={rows} updateState = {(updateNum===(node.INDEX))&&true} rowIndex={node.INDEX} />

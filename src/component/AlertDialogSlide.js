@@ -47,9 +47,9 @@ export default function AlertDialogSlide() {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle>{state}</DialogTitle>
-        <DialogContent>
+        <DialogContent sx={{maxHeight:'300px'}}>
           <DialogContentText id="alert-dialog-slide-description">
-            <span style={{whiteSpace: "pre-wrap"}}>
+            <span style={{whiteSpace: "pre-wrap", maxHeight:'300px', overflowY:'scroll'}}>
             {msg}
             </span>
           </DialogContentText>

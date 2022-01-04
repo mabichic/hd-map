@@ -2,11 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { createStore } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducers/index';
+import {composeWithDevTools } from 'redux-devtools-extension';
 import { StyledEngineProvider } from '@mui/material/styles';
-const store = createStore(reducer);
+import ReduxThunk from 'redux-thunk';
+import logger from 'redux-logger';
+const store = createStore(reducer,
+  composeWithDevTools(applyMiddleware(ReduxThunk))
+  );
 ReactDOM.render(
   <Provider store = {store}>
     <StyledEngineProvider injectFirst>

@@ -13,7 +13,7 @@ const HdMapStyle = function(feature, resolution) {
             text: new Text({
                 font: '12px Verdana',
                 scale: 1,
-                text: feature.get('name'), 
+                text: feature.get('Name'), 
                 fill: new Fill({ color: 'red' }),
                 stroke: new Stroke({ color: 'yellow', width: 3 }),
                 offsetY : -10, 
@@ -26,11 +26,11 @@ const HdMapStyle = function(feature, resolution) {
             }),
         });
     }
-    if(feature.get('group') === 'LAYER_LANESIDES'){
+    if(feature.get('group') === 'LAYER_LANESIDE'){
         var storkeColor="#ffffff";
         var lineDash = 0;
-        var color = feature.get("color"); 
-        var type = feature.get("type");
+        var color = feature.get("Color"); 
+        var type = feature.get("Type");
         if(color === "LS_WHITE") storkeColor='WHITE';
         if(color === "LS_YELLOW") storkeColor='YELLOW';
         if(color === "LS_BLUE") storkeColor='BLUE';
@@ -69,7 +69,7 @@ const HdMapStyle = function(feature, resolution) {
     }
     if(feature.get('group') === 'LAYER_ROADMARK'){
         var color = 'RED';
-        var type = feature.get("type"); 
+        var type = feature.get("Type"); 
         if(type==="RM_CROSSWALK") color = 'WHITE';
         if(type==="RM_SPEEDBUMP") color = 'YELLOW';
         if(type==="RM_ARROW") color = '#CCCCFF';
@@ -120,6 +120,15 @@ const HdMapStyle = function(feature, resolution) {
         );
         return styles;
     }
+
+    if(feature.get('group') === 'GPS_LOG'){
+        return new Style({
+            stroke: new Stroke({
+                color:'RED', width:4
+            }),
+        });
+    }
+
 };
 
 export default HdMapStyle;
