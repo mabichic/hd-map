@@ -70,6 +70,8 @@
   "main": "public/Main.js",
   "homepage": "./",
   "dependencies": {
-    "react-tooltip": "^4.2.21"
+    "react-draggable": "^4.4.4",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.4.1"
   }
 }
